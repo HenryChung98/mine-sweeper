@@ -174,7 +174,7 @@ function checkWin(rowNum, colNum) {
   if (remainingSafeCells === 0) {
     revealAllCells(rowNum, colNum);
     getTime = document.getElementById("timer").innerHTML;
-    alert('You Win!\n' + getTime + ' seconds');
+    // alert('You Win!\n' + getTime + ' seconds');
     document.getElementById("sunglasses").style.zIndex = 100; 
     stopTimer();
     displayAllMines();
