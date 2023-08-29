@@ -32,7 +32,7 @@ function hardGame() {
     
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
-  displayMinesOnBoard(row, co, mineNum);
+  displayMinesOnBoard(row, col, mineNum);
 
 }
 function chalGame() {
