@@ -1,4 +1,3 @@
-//practice
 
 tdArr = document.getElementsByTagName("td");
 const COLOR = ["red", "skyblue", "olive", "green", "blue", "purple", "brown", "black"];
