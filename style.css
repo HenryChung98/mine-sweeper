@@ -1,0 +1,132 @@
+html{
+  background-color: rgb(47, 63, 115);
+}
+
+body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+img{
+  text-align: center;
+  margin: 0 auto;
+  width: 50px;
+  background-color: rgb(159, 178, 241);
+  border-radius: 10px;
+  border: 3px solid rgb(7, 19, 59);
+  padding: 5px;
+  position: relative;
+}
+#dizzy{
+  z-index: 1;
+}
+#smiling{
+  z-index: 2;
+  bottom: 66px;
+}
+#sunglasses{
+  z-index: 1;
+  bottom: 132px;
+}
+#star{
+  z-index: 1;
+  bottom: 198px;
+}
+
+
+input{
+  border: none;
+  border-radius: 10px;
+  width: 70px;
+  height: 33px;
+}
+
+
+.timerAndRemain{
+  display: flex;
+  justify-content: space-between;
+  width: 407.2px;
+  position: relative;
+  bottom: 200px;
+}
+
+.customBox, .levelBox{
+  text-align: center;
+  padding: 50px;
+  margin: 5px;
+  border-radius: 10px;
+  background-color: rgb(7, 19, 59);
+  position: relative;
+  bottom: 100px;
+}
+
+#row, #col, #mineNum{
+  font-size: 15px;
+  width: 150px;
+  background-color: rgb(228, 225, 225);
+  margin: 5px;
+  height: 35px;
+}
+button{
+  background-color: rgb(228, 225, 225);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+  transition: .3s;
+  font-size: 15px;
+  width: 150px;
+  height: 35px;
+}
+
+button:hover{
+  background-color: rgb(117, 143, 227);
+}
+
+
+
+#timer, #remainingMines{
+  background-color: rgb(7, 19, 59);
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+  width: 100px;
+  height: 100%;
+  text-align: center;
+}
+
+table{
+  border: none;
+  border-collapse: collapse;
+  position: relative;
+  bottom: 200px;
+}
+
+
+td{
+  border-radius: 3px;
+  width: 30px;
+  height: 30px;
+  color: rgb(181, 192, 228);
+  min-width: 30px;
+  min-height: 30px;
+  background-color: rgb(7, 19, 59);
+  text-align: center;
+}
+
+td:hover{
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.7);
+  background-color: rgb(68, 85, 140);
+}
+
+
+.mine {
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+.flag {
+  font-size: 20px;
+}
