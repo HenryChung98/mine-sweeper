@@ -5,3 +5,6 @@
 * If you think there is a mine under the square, you may right-click.
 * If you want to restart, you may click the emoji.
 * If you want to reset the difficulty, you may refresh it.
+
+
+[PLAY](https://henrychung98.github.io/minesweeper/)
