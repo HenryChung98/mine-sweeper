@@ -15,6 +15,7 @@ let isToggled = false;
 let isGameOver = false;
 document.getElementById("forMobile").appendChild(toggleButton);
 let checkGame = 0;
+let isStarted = false;
 
 
 // start game
@@ -23,6 +24,7 @@ function easyGame() {
   const col = 10;
   const mineNum = 9;
   checkGame = 1;
+  isStarted = true;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
@@ -32,6 +34,7 @@ function midGame() {
   const col = 16;
   const mineNum = 40;
   checkGame = 2;
+  isStarted = true;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
@@ -41,6 +44,7 @@ function hardGame() {
   const col = 16;
   const mineNum = 99;
   checkGame = 3;
+  isStarted = true;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
@@ -50,6 +54,7 @@ function chalGame() {
   const col = 77;
   const mineNum = 2401;
   checkGame = 4;
+  isStarted = true;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
@@ -62,6 +67,7 @@ function customGame(){
   const col = parseInt(colNum);
   const mineNum = parseInt(mineNumber);
   checkGame = 5;
+  isStarted = true;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
@@ -75,6 +81,7 @@ function reset(){
   stopTimer();
   startTimer();
   isGameOver = false;
+  if (isStarted){
   if (checkGame === 1){
     easyGame();
   }
@@ -90,6 +97,7 @@ function reset(){
   else{
     customGame();
   }
+}
 }
 //reset
 
