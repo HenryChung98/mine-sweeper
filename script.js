@@ -6,6 +6,22 @@ let flaggedCells = [];
 let startTime; // 변수를 선언하여 시작 시간 저장
 let timerInterval; // setInterval을 사용하여 시간 업데이트를 처리하기 위한 변수
 
+
+const toggleButton = document.createElement("button");
+toggleButton.textContent = "🚩";
+toggleButton.style.width = "50px";
+toggleButton.style.height = "39px";
+toggleButton.style.position = "relative";
+toggleButton.style.bottom = "5px";
+toggleButton.style.backgroundColor = "rgb(7, 19, 59)";
+let isToggled = false;
+
+
+document.getElementById("forMobile").appendChild(toggleButton);
+
+
+
+
 function easyGame() {
   const row = 9;
   const col = 9;
@@ -13,6 +29,8 @@ function easyGame() {
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
+  
+  
 
 }
 function midGame() {
@@ -87,6 +105,17 @@ function setMinePositions(mineNum, totalCells) {
   }
 }
 
+toggleButton.addEventListener("click", function () {
+  // 토글 상태 변경
+  isToggled = !isToggled;
+
+  // 토글 상태에 따라 버튼 텍스트 변경
+  if (isToggled) {
+    toggleButton.style.backgroundColor = "rgb(30, 44, 90)";
+  } else {
+    toggleButton.style.backgroundColor = "rgb(7, 19, 59)";
+  }
+});
 
 function displayMinesOnBoard(rowNum, colNum, mineNum){
   const cells = document.querySelectorAll("#gameBoard td");
@@ -102,12 +131,42 @@ function displayMinesOnBoard(rowNum, colNum, mineNum){
     }
 
     cell.addEventListener('click', () => {
+
+
       if (minePositions.includes(index)) {
+        //toggle
+        if (isToggled) {
+          // 깃발 모드일 때
+          if (flaggedCells.includes(index)) {
+            flaggedCells = flaggedCells.filter(item => item !== index);
+            cell.textContent = '';
+          } else {
+            flaggedCells.push(index);
+            cell.textContent = '🚩'; // Show flag icon
+          }
+          updateRemainingMinesCount(mineNum);
+        }
+        //toggle
+        else{
         document.getElementById("timer").textContent = "Game Over"
         displayAllMines();
         document.getElementById("dizzy").style.zIndex = 99; 
-        stopTimer();
+        stopTimer();}
       } else {
+        //toggle
+        if (isToggled) {
+          // 깃발 모드일 때
+          if (flaggedCells.includes(index)) {
+            flaggedCells = flaggedCells.filter(item => item !== index);
+            cell.textContent = '';
+          } else {
+            flaggedCells.push(index);
+            cell.textContent = '🚩'; // Show flag icon
+          }
+          updateRemainingMinesCount(mineNum);
+        }
+        //toggle
+        else{
         openEmptyCells(row, col, rowNum, colNum); // 연쇄적으로 열기
         const nearbyMines = countNearbyMines(row, col, rowNum, colNum);
         cell.textContent = nearbyMines > 0 ? nearbyMines : '0';
@@ -120,7 +179,7 @@ function displayMinesOnBoard(rowNum, colNum, mineNum){
       if (!minePositions.includes(index)) {
         cell.classList.add('open');
         checkWin(rowNum, colNum); // Check for win condition
-      }
+      }}
     });
   
     cell.addEventListener('contextmenu', (event) => {
@@ -135,9 +194,12 @@ function displayMinesOnBoard(rowNum, colNum, mineNum){
       }
       updateRemainingMinesCount(mineNum);
     });
+
   });
   
 }
+
+
 
 
 function countNearbyMines(row, col, rowNum, colNum) {
@@ -264,6 +326,9 @@ cell.style.backgroundColor = "rgb(30, 44, 90)";
     cell.textContent = nearbyMines;
   }
 }
+
+
+
 
 // function reset() {
 //   // 초기화 코드 작성
