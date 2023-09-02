@@ -11,7 +11,6 @@
 
 html{
   background-color: rgb(47, 63, 115);
-  
 }
 
 body{
@@ -136,8 +135,6 @@ td:hover{
 
 .mine {
   /* background-color: red; */
-  color: white;
-  font-weight: bold;
   text-align: center;
 }
 .flag {
@@ -148,4 +145,7 @@ td:hover{
   z-index: 2;
 }
 
+#gameBoard{
+  margin: auto;
+}
 

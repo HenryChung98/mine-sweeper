@@ -1,6 +1,3 @@
-
-tdArr = document.getElementsByTagName("td");
-const COLOR = ["red", "skyblue", "olive", "green", "blue", "purple", "brown", "black"];
 let minePositions = [];
 let flaggedCells = [];
 let startTime; // 변수를 선언하여 시작 시간 저장
@@ -15,53 +12,47 @@ toggleButton.style.position = "relative";
 toggleButton.style.bottom = "5px";
 toggleButton.style.backgroundColor = "rgb(7, 19, 59)";
 let isToggled = false;
-
-
+let isGameOver = false;
 document.getElementById("forMobile").appendChild(toggleButton);
+let checkGame = 0;
 
 
-
-
+// start game
 function easyGame() {
-  const row = 9;
-  const col = 9;
-  const mineNum = 10;
+  const row = 10;
+  const col = 10;
+  const mineNum = 9;
+  checkGame = 1;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
-  
-  
-
 }
 function midGame() {
   const row = 16;
   const col = 16;
   const mineNum = 40;
-    
+  checkGame = 2;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
-
 }
 function hardGame() {
   const row = 30;
   const col = 16;
   const mineNum = 99;
-    
+  checkGame = 3;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
-
 }
 function chalGame() {
-  const row = 59;
-  const col = 59;
-  const mineNum = 1500;
-    
+  const row = 77;
+  const col = 77;
+  const mineNum = 2401;
+  checkGame = 4;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
-
 }
 function customGame(){
   rowNum = document.getElementById("row").value;
@@ -70,14 +61,61 @@ function customGame(){
   const row = parseInt(rowNum);
   const col = parseInt(colNum);
   const mineNum = parseInt(mineNumber);
-
+  checkGame = 5;
   makeBoard(row, col);
   setMinePositions(mineNum, row * col);
   displayMinesOnBoard(row, col, mineNum);
-  
+}
+//start game
+
+//reset
+function reset(){
+  document.getElementById("dizzy").style.zIndex = 1; 
+  document.getElementById("sunglasses").style.zIndex = 1; 
+  stopTimer();
+  startTimer();
+  isGameOver = false;
+  if (checkGame === 1){
+    easyGame();
+  }
+  else if (checkGame === 2){
+    midGame();
+  }
+  else if (checkGame === 3){
+    hardGame();
+  }
+  else if (checkGame === 4){
+    chalGame();
+  }
+  else{
+    customGame();
+  }
+}
+//reset
+
+// set timer
+function startTimer() {
+  startTime = new Date().getTime();
+  timerInterval = setInterval(updateTimer, 1000);
 }
 
 
+function updateTimer() {
+  const currentTime = new Date().getTime();
+  const elapsedTime = Math.floor((currentTime - startTime) / 1000); // 경과 시간(초)
+  
+  document.getElementById("timer").textContent = `Time: ${elapsedTime}`;
+}
+
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+//set timer
+
+
+
+// set elements
 function makeBoard(rowNum, colNum) {
   let tableEle;
   tableEle += '<table>';
@@ -105,10 +143,43 @@ function setMinePositions(mineNum, totalCells) {
   }
 }
 
+
+
+//during game
+function openEmptyCells(row, col, rowNum, colNum) {
+  if (row < 0 || row >= rowNum || col < 0 || col >= colNum) {
+    return; // 범위를 벗어나면 종료
+  }
+
+  const index = row * colNum + col;
+  const cell = document.querySelectorAll("#gameBoard td")[index];
+  
+  if (cell.classList.contains('open') || flaggedCells.includes(index)) {
+    return; // 이미 열린 셀이거나 깃발이 세워진 셀이면 종료
+  }
+
+  cell.classList.add('open'); // 셀 열기
+cell.style.backgroundColor = "rgb(30, 44, 90)";
+  const nearbyMines = countNearbyMines(row, col, rowNum, colNum);
+  if (nearbyMines === 0) {
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        openEmptyCells(row + i, col + j, rowNum, colNum);
+         // 주변 셀도 연쇄적으로 열기
+      }
+    }
+  } else {
+    cell.textContent = nearbyMines;
+  }
+}
+
+
 toggleButton.addEventListener("click", function () {
   // 토글 상태 변경
   isToggled = !isToggled;
-
+  if (isGameOver){
+    return ;
+  }
   // 토글 상태에 따라 버튼 텍스트 변경
   if (isToggled) {
     toggleButton.style.backgroundColor = "rgb(30, 44, 90)";
@@ -116,6 +187,7 @@ toggleButton.addEventListener("click", function () {
     toggleButton.style.backgroundColor = "rgb(7, 19, 59)";
   }
 });
+
 
 function displayMinesOnBoard(rowNum, colNum, mineNum){
   const cells = document.querySelectorAll("#gameBoard td");
@@ -131,8 +203,9 @@ function displayMinesOnBoard(rowNum, colNum, mineNum){
     }
 
     cell.addEventListener('click', () => {
-
-
+      if (isGameOver){
+        return ;
+      }
       if (minePositions.includes(index)) {
         //toggle
         if (isToggled) {
@@ -151,8 +224,10 @@ function displayMinesOnBoard(rowNum, colNum, mineNum){
         document.getElementById("timer").textContent = "Game Over"
         displayAllMines();
         document.getElementById("dizzy").style.zIndex = 99; 
-        stopTimer();}
-      } else {
+        stopTimer();
+        isGameOver = true;
+      }
+    } else {
         //toggle
         if (isToggled) {
           // 깃발 모드일 때
@@ -184,7 +259,9 @@ function displayMinesOnBoard(rowNum, colNum, mineNum){
   
     cell.addEventListener('contextmenu', (event) => {
       event.preventDefault(); // 우클릭 메뉴 띄우지 않도록 막음
-  
+      if (isGameOver){
+        return ;
+      }
       if (flaggedCells.includes(index)) {
         flaggedCells = flaggedCells.filter(item => item !== index);
         cell.textContent = '';
@@ -198,8 +275,6 @@ function displayMinesOnBoard(rowNum, colNum, mineNum){
   });
   
 }
-
-
 
 
 function countNearbyMines(row, col, rowNum, colNum) {
@@ -225,6 +300,31 @@ function countNearbyMines(row, col, rowNum, colNum) {
   return count;
 }
 
+
+function revealAllCells(rowNum, colNum) {
+  const cells = document.querySelectorAll("#gameBoard td");
+  cells.forEach((cell, index) => {
+    const row = Math.floor(index / rowNum);
+    const col = index % rowNum;
+
+    if (!minePositions.includes(index)) {
+      const nearbyMines = countNearbyMines(row, col, rowNum, colNum);
+      cell.textContent = nearbyMines > 0 ? nearbyMines : '0';
+
+    }
+  });
+}
+
+
+function updateRemainingMinesCount(mineNum) {
+  const flaggedCount = flaggedCells.length;
+  const remainingMines = mineNum - flaggedCount;
+  document.getElementById("remainingMines").textContent = `Remaining Mines: ${remainingMines}`;
+}
+//during game
+
+
+//end
 function checkWin(rowNum, colNum) {
   const cells = document.querySelectorAll("#gameBoard td");
   let remainingSafeCells = 0;
@@ -242,39 +342,8 @@ function checkWin(rowNum, colNum) {
     document.getElementById("sunglasses").style.zIndex = 100; 
     stopTimer();
     displayAllMines();
+    isGameOver = true;
   }
-}
-
-function revealAllCells(rowNum, colNum) {
-  const cells = document.querySelectorAll("#gameBoard td");
-  cells.forEach((cell, index) => {
-    const row = Math.floor(index / rowNum);
-    const col = index % rowNum;
-
-    if (!minePositions.includes(index)) {
-      const nearbyMines = countNearbyMines(row, col, rowNum, colNum);
-      cell.textContent = nearbyMines > 0 ? nearbyMines : '0';
-
-    }
-  });
-}
-
-
-
-function startTimer() {
-  startTime = new Date().getTime();
-  timerInterval = setInterval(updateTimer, 1000);
-}
-
-function updateTimer() {
-  const currentTime = new Date().getTime();
-  const elapsedTime = Math.floor((currentTime - startTime) / 1000); // 경과 시간(초)
-  
-  document.getElementById("timer").textContent = `Time: ${elapsedTime}`;
-}
-
-function stopTimer() {
-  clearInterval(timerInterval);
 }
 
 
@@ -287,62 +356,9 @@ function displayAllMines() {
     }
   });
 }
-
-function startGame(row, col, mineNum) {
-  makeBoard(row, col);
-  setMinePositions(mineNum, row * col);
-  displayMinesOnBoard(row, col);
-}
-
-function updateRemainingMinesCount(mineNum) {
-  const flaggedCount = flaggedCells.length;
-  const remainingMines = mineNum - flaggedCount;
-  document.getElementById("remainingMines").textContent = `Remaining Mines: ${remainingMines}`;
-}
-
-function openEmptyCells(row, col, rowNum, colNum) {
-  if (row < 0 || row >= rowNum || col < 0 || col >= colNum) {
-    return; // 범위를 벗어나면 종료
-  }
-
-  const index = row * colNum + col;
-  const cell = document.querySelectorAll("#gameBoard td")[index];
-  
-  if (cell.classList.contains('open') || flaggedCells.includes(index)) {
-    return; // 이미 열린 셀이거나 깃발이 세워진 셀이면 종료
-  }
-
-  cell.classList.add('open'); // 셀 열기
-cell.style.backgroundColor = "rgb(30, 44, 90)";
-  const nearbyMines = countNearbyMines(row, col, rowNum, colNum);
-  if (nearbyMines === 0) {
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        openEmptyCells(row + i, col + j, rowNum, colNum);
-         // 주변 셀도 연쇄적으로 열기
-      }
-    }
-  } else {
-    cell.textContent = nearbyMines;
-  }
-}
+//end
 
 
 
 
-// function reset() {
-//   // 초기화 코드 작성
-//   document.body.style.backgroundColor = ''; // 배경색 초기화
-//   document.getElementById("timer").textContent = 'Time: 0'; // 타이머 초기화
-//   minePositions = []; // 폭탄 위치 초기화
-//   clearInterval(timerInterval); // 타이머 멈추기
-//   timerInterval = null;
-//   startTime = null;
 
-//   cells.forEach(cell => {
-//     cell.textContent = ''; // 셀 내용 초기화
-//     cell.style.backgroundColor = ''; // 셀 배경색 초기화
-//     cell.classList.remove('open', 'mine'); // 클래스 초기화
-//   });
-//   startGame(row, col, mineNum); 
-// }
