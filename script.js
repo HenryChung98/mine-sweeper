@@ -149,7 +149,7 @@ function stopTimer() {
 
 // set elements
 function makeBoard(rowNum, colNum) {
-  let tableEle;
+  let tableEle = "";
   tableEle += '<table>';
 
   for (let i = 0; i < colNum; i++) {
