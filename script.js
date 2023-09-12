@@ -47,8 +47,8 @@ function midGame() {
 }
 function hardGame() {
   const row = 30;
-  const col = 16;
-  const mineNum = 99;
+  const col = 30;
+  const mineNum = 180;
   checkGame = 3;
   isStarted = true;
   makeBoard(row, col);
