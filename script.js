@@ -191,7 +191,6 @@ function openEmptyCells(row, col, rowNum, colNum) {
   }
 
   cell.classList.add('open'); // 셀 열기
-  cell.style.backgroundColor = "rgb(30, 44, 90)";
   const nearbyMines = countNearbyMines(row, col, rowNum, colNum);
   if (nearbyMines === 0) {
     for (let i = -1; i <= 1; i++) {
