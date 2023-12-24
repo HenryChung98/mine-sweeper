@@ -8,3 +8,28 @@
 
 
 [PLAY](https://henrychung98.github.io/minesweeper/)
+
+
+Choose your level
+
+![description](description/des1.png)
+
+Your screen once you click beginner
+
+![description](description/des2.png)
+
+Click the tiles and find mines
+
+![description](description/des3.png)
+
+If you think there is a mine under the tile, right-click it.
+
+![description](description/des4.png)
+
+When you succeed
+
+![description](description/des5.png)
+
+When you failed
+
+![description](description/des6.png)
