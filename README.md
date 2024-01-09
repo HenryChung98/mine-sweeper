@@ -7,7 +7,7 @@
 * If you want to reset the difficulty, you may refresh it.
 
 
-[PLAY](https://henrychung98.github.io/mineSweeper/)
+[PLAY](https://henrychung-minesweeper.netlify.app)
 
 
 Choose your level
